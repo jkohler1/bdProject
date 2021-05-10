@@ -13,7 +13,7 @@ public class Query {
     }
 
     public void exec() throws SQLException {
-        PreparedStatement ps = Database.getPrepareStatement(query);
+        PreparedStatement ps = Database.getPreparedStatement(query);
         ResultSet rs = ps.executeQuery();
         while(rs.next()){
             System.out.println(rs);

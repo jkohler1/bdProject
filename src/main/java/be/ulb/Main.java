@@ -17,7 +17,6 @@ public class Main extends Application {
         Database.initConnection();
         LoginController controller = new LoginController();
         controller.show();
-        (new HomeController()).show();
     }
 
 

@@ -103,5 +103,6 @@ public class RegisterViewController extends BaseViewController implements Initia
     public interface ViewListener{
         void goBack() throws NavigationException;
         void registerUser(String nom, String prenom, String pseudo, String rue, String num, String codePostal, String ville, String password,String tel,String centre, String type, Pays pays) throws SQLException, NavigationException;
+
     }
 }
