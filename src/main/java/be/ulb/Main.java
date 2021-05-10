@@ -2,9 +2,7 @@ package be.ulb;
 
 import be.ulb.controllers.LoginController;
 import be.ulb.controllers.HomeController;
-import be.ulb.controllers.WaitingController;
 import be.ulb.controllers.views.ViewLoader;
-import be.ulb.controllers.views.WaitingViewController;
 import be.ulb.models.Database;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -13,13 +11,13 @@ import java.sql.SQLException;
 
 public class Main extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         ViewLoader.getInstance().setStage(primaryStage);
         ViewLoader.getInstance().initializeWindow();
         Database.initConnection();
-        (new WaitingController()).show();
         LoginController controller = new LoginController();
         controller.show();
+        (new HomeController()).show();
     }
 
 
