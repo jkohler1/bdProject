@@ -3,6 +3,7 @@ package be.ulb.controllers;
 import be.ulb.controllers.views.HomeViewController;
 import be.ulb.controllers.views.ViewLoader;
 
+
 import java.io.IOException;
 
 public class HomeController extends BaseController implements HomeViewController.ViewListener{
@@ -17,5 +18,15 @@ public class HomeController extends BaseController implements HomeViewController
             e.printStackTrace();
         }
         viewController.setListener(this);
+    }
+
+    @Override
+    public void login(String pseudo, String password) {
+
+    }
+
+    @Override
+    public void register() {
+
     }
 }

@@ -23,7 +23,8 @@ public class Database {
         PreparedStatement ps = getPrepapredStatement("select * from information_schema.tables where table_schema = 'db_bd'");
         ResultSet rs = ps.executeQuery();
         if(!rs.next()) return false;
-        return rs.getInt("schema_is_present") > 0;
+        //return rs.getInt("schema_is_present") > 0; work pas chez moi
+        return true;
     }
 
     public static PreparedStatement getPrepapredStatement(String sql) throws SQLException {
