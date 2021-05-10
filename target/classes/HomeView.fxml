@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.ulb.controllers.views.HomeViewController">
+   <children>
+      <Button fx:id="loginButton" layoutX="327.0" layoutY="512.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="151.0" text="Se connecter" />
+      <Button fx:id="registerButton" layoutX="823.0" layoutY="512.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="151.0" text="S'incrire" />
+      <TextField fx:id="loginInput" layoutX="327.0" layoutY="347.0" prefHeight="26.0" prefWidth="271.0" promptText="Pseudo" />
+      <TextField fx:id="passwordInput" accessibleRole="PASSWORD_FIELD" layoutX="327.0" layoutY="425.0" prefHeight="26.0" prefWidth="271.0" promptText="Password" />
+   </children>
+</AnchorPane>
