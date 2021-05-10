@@ -3,3 +3,4 @@
 *.iml
 /target/classes/be/ulb/controllers/BaseController.class
 *.class
+target/*
