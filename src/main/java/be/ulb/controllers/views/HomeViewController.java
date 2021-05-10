@@ -3,7 +3,10 @@ package be.ulb.controllers.views;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,16 +16,13 @@ public class HomeViewController extends BaseViewController implements Initializa
     private ViewListener listener;
 
     @FXML
-    private Button loginButton;
+    TableView tableView;
 
     @FXML
-    private Button registerButton;
+    Button execBtn;
 
     @FXML
-    private TextField loginInput;
-
-    @FXML
-    private TextField passwordInput;
+    TextArea queryArea;
 
     public void setListener(ViewListener listener){
         this.listener = listener;
@@ -30,12 +30,19 @@ public class HomeViewController extends BaseViewController implements Initializa
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loginButton.setOnMouseClicked(event->listener.login(loginInput.getText(),passwordInput.getText()));
-        registerButton.setOnMouseClicked(event->listener.register());
+        execBtn.setOnMouseClicked(event->listener.execQuery(queryArea.getText()));
+        execBtn.setOnKeyReleased(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                listener.execQuery(queryArea.getText());
+            }
+        });
     }
 
     public interface ViewListener{
-        void login(String pseudo, String password);
-        void register();
+        /**
+         * Execute a query
+         * @param text the query
+         */
+        void execQuery(String text);
     }
 }

@@ -11,9 +11,6 @@ public class Database {
         Class.forName("java.sql.DriverManager");
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/","bd_user","bd_password");
         connection.setAutoCommit(false);
-    }
-
-    public static void fetchData() throws SQLException, IOException, InterruptedException {
         if(!checkIfSchemaExist()){
             ProcessBuilder processBuilder = new ProcessBuilder("python" ,"src/main/java/be/ulb/scripts/Script.py");
             processBuilder.redirectErrorStream(true);
@@ -21,7 +18,12 @@ public class Database {
             Process p = processBuilder.start();
             p.waitFor();
         }
-        connection.setSchema("db_bd");
+        connectToSchema();
+    }
+
+    private static void connectToSchema() throws SQLException {
+        PreparedStatement ps = getPrepareStatement("use db_bd;");
+        ps.executeUpdate();
     }
 
     private static boolean checkIfSchemaExist() throws SQLException {
