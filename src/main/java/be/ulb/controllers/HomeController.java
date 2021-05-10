@@ -2,9 +2,11 @@ package be.ulb.controllers;
 
 import be.ulb.controllers.views.HomeViewController;
 import be.ulb.controllers.views.ViewLoader;
+import be.ulb.models.Query;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class HomeController extends BaseController implements HomeViewController.ViewListener{
 
@@ -21,12 +23,12 @@ public class HomeController extends BaseController implements HomeViewController
     }
 
     @Override
-    public void login(String pseudo, String password) {
-
-    }
-
-    @Override
-    public void register() {
-
+    public void execQuery(String text) {
+        Query query = new Query(text);
+        try {
+            query.exec();
+        } catch (SQLException e) {
+            System.out.println("Error while executing query : " + e.getMessage());
+        }
     }
 }

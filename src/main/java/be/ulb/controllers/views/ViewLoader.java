@@ -2,9 +2,11 @@ package be.ulb.controllers.views;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ViewLoader {
 
@@ -29,6 +31,7 @@ public class ViewLoader {
 
     public void initializeWindow() {
         stage.setTitle("INFO-H303 | Projet de base de donnée");
+        //stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/coronavirus.png"))));
         stage.centerOnScreen();
     }
 
