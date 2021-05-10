@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class HomeViewController extends BaseViewController implements Initializable {
@@ -30,12 +31,18 @@ public class HomeViewController extends BaseViewController implements Initializa
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loginButton.setOnMouseClicked(event->listener.login(loginInput.getText(),passwordInput.getText()));
+        loginButton.setOnMouseClicked(event-> {
+            try {
+                listener.login(loginInput.getText(),passwordInput.getText());
+            } catch (SQLException e) {
+                showError("erreur login",e.getMessage(),false);
+            }
+        });
         registerButton.setOnMouseClicked(event->listener.register());
     }
 
     public interface ViewListener{
-        void login(String pseudo, String password);
+        void login(String pseudo, String password) throws SQLException;
         void register();
     }
 }

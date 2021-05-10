@@ -2,4 +2,26 @@ package be.ulb.models;
 
 public class Epidemiologiste extends Utilisateur {
     String tel, centre;
+
+    public Epidemiologiste(String uuid, String prenom, String nom, String rue, String numero, String codePostal, String ville, String isoCode,String tel,String centre) {
+        super(uuid, prenom, nom, rue, numero, codePostal, ville, isoCode);
+        this.centre=centre;
+        this.tel=tel;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getCentre() {
+        return centre;
+    }
+
+    public void setCentre(String centre) {
+        this.centre = centre;
+    }
 }

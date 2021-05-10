@@ -20,15 +20,19 @@ public class Database {
     }
 
     private static boolean checkIfSchemaExist() throws SQLException {
-        PreparedStatement ps = getPrepapredStatement("select * from information_schema.tables where table_schema = 'db_bd'");
+        PreparedStatement ps = getPreparedStatement("select * from information_schema.tables where table_schema = 'db_bd'");
         ResultSet rs = ps.executeQuery();
         if(!rs.next()) return false;
         //return rs.getInt("schema_is_present") > 0; work pas chez moi
         return true;
     }
 
-    public static PreparedStatement getPrepapredStatement(String sql) throws SQLException {
+    public static PreparedStatement getPreparedStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
+    }
+
+    public static PreparedStatement getPreparedStatement(String sql, int s) throws SQLException {
+        return connection.prepareStatement(sql,s);
     }
 
     public static void commitStatement() throws SQLException {

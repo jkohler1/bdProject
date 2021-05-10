@@ -4,6 +4,7 @@ module bd.projet {
     requires javafx.fxml;
     requires mysql.connector.java;
     requires java.sql;
+    requires spring.security.crypto;
 
     opens be.ulb;
     opens be.ulb.controllers;
