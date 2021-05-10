@@ -1,3 +1,5 @@
 .idea/
 /out/
 *.iml
+/target/classes/be/ulb/controllers/BaseController.class
+*.class
