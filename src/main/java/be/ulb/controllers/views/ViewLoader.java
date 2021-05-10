@@ -28,7 +28,7 @@ public class ViewLoader {
     private ViewLoader(){};
 
     public void initializeWindow() {
-        stage.setTitle("INFOF-XXX Projet de base de donnée");
+        stage.setTitle("INFO-H303 | Projet de base de donnée");
         stage.centerOnScreen();
     }
 
