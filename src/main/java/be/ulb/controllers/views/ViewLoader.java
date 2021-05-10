@@ -27,8 +27,9 @@ public class ViewLoader {
 
     private ViewLoader(){};
 
-    public void initializeWindow() throws IOException {
-        stage.setTitle("INFOF-XXX Projet de base de donnée");
+    public void initializeWindow() {
+        stage.setTitle("INFO-H303 | Projet de base de donnée");
+        stage.centerOnScreen();
     }
 
     public BaseViewController loadView(String path) throws IOException {
@@ -36,7 +37,6 @@ public class ViewLoader {
         loader.load();
         BaseViewController viewController = loader.getController();
         stage.setScene(new Scene(loader.getRoot()));
-        stage.centerOnScreen();
         stage.show();
         return viewController;
     }
