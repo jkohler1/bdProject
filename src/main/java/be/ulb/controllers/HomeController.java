@@ -7,6 +7,7 @@ import be.ulb.models.Query;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class HomeController extends BaseController implements HomeViewController.ViewListener{
 
@@ -27,6 +28,7 @@ public class HomeController extends BaseController implements HomeViewController
         Query query = new Query(text);
         try {
             query.exec();
+            viewController.setTableViewData(query.getFields(), query.getRows());
         } catch (SQLException e) {
             System.out.println("Error while executing query : " + e.getMessage());
         }
