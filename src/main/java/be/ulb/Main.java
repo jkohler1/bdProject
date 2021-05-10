@@ -1,6 +1,6 @@
 package be.ulb;
 
-import be.ulb.controllers.HomeController;
+import be.ulb.controllers.LoginController;
 import be.ulb.controllers.views.ViewLoader;
 import be.ulb.models.Database;
 import javafx.application.Application;
@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         ViewLoader.getInstance().setStage(primaryStage);
         ViewLoader.getInstance().initializeWindow();
-        HomeController controller = new HomeController();
+        LoginController controller = new LoginController();
         controller.show();
     }
 

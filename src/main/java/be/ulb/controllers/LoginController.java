@@ -1,6 +1,6 @@
 package be.ulb.controllers;
 
-import be.ulb.controllers.views.HomeViewController;
+import be.ulb.controllers.views.LoginViewController;
 import be.ulb.controllers.views.ViewLoader;
 import be.ulb.dao.UserDao;
 import be.ulb.exceptions.NavigationException;
@@ -9,14 +9,14 @@ import be.ulb.exceptions.NavigationException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class HomeController extends BaseController implements HomeViewController.ViewListener, RegisterController.Listener{
+public class LoginController extends BaseController implements LoginViewController.ViewListener, RegisterController.Listener{
 
-    private HomeViewController viewController;
+    private LoginViewController viewController;
 
     @Override
     public void show() throws NavigationException {
         try {
-            viewController = (HomeViewController) ViewLoader.getInstance().loadView("HomeView.fxml");
+            viewController = (LoginViewController) ViewLoader.getInstance().loadView("LoginView.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

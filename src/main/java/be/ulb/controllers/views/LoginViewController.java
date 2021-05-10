@@ -9,7 +9,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class HomeViewController extends BaseViewController implements Initializable {
+public class LoginViewController extends BaseViewController implements Initializable {
 
     private ViewListener listener;
 
