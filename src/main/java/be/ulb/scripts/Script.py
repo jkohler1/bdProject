@@ -57,15 +57,16 @@ except mysql.connector.Error as err:
         print(err)
 
 else:
+    print("starting building the database...\n")
     conn.cursor().execute("CREATE SCHEMA IF NOT EXISTS db_bd")
     conn.database = 'db_bd'
-    executeScriptFromFile('../scripts/CreateTable.sql')
+    executeScriptFromFile('src/main/java/be/ulb/scripts/CreateTable.sql')
     conn.commit()
     cursor = conn.cursor()
     dico = {}
     iso_codes = []
     vaccins = {}
-    directory = "../scripts/data"
+    directory = "src/main/java/be/ulb/scripts/data"
 
     for filename in os.listdir(directory):
         if filename == "vaccinations.csv" or filename == "hospitals.csv":
@@ -73,6 +74,7 @@ else:
         else:
             dico[filename.split(".")[0]] = importCsv(directory + "/" + filename, ';')
 
+    print("inserting climates")
     for climat in dico["climate"]:
         insert_stmt = (
             """INSERT INTO Climats(id,description)
@@ -83,6 +85,7 @@ else:
     regions = {}
     continents = {}
 
+    print("inserting countries")
     for pays in dico["country"]:
         if not pays["continent"] in continents:
             insert_stmt = (
@@ -115,6 +118,7 @@ else:
             pays["climate"])
         executeQuery(insert_stmt, data, cursor, conn)
 
+    print("inserting vaccinations")
     for test in dico["vaccinations"]:
         insert_stmt = (
             """INSERT INTO Tests(iso_code,date,tests,vaccinations)
@@ -130,6 +134,7 @@ else:
                     test["vaccinations"])
             executeQuery(insert_stmt, data, cursor, conn)
 
+    print("inserting producers")
     for vaccin in dico["producers"]:
         for source_vaccin in (vaccin["vaccines"].split(",")):
             source_vaccin = source_vaccin.lstrip()
@@ -150,6 +155,7 @@ else:
                 data = (vaccin["iso_code"], id_vaccin, vaccin["date"])
                 executeQuery(insert_stmt, data, cursor, conn)
 
+    print("inserting hospitals")
     users = []
     for hospital in dico["hospitals"]:
         if not hospital["source_epidemiologiste"] in users:
@@ -175,6 +181,6 @@ else:
         data = (datetime.strptime(hospital["date"], "%d/%m/%Y").isoformat(), hospital["icu_patients"],
                 hospital["hosp_patients"], hospital["iso_code"], hospital["source_epidemiologiste"])
         executeQuery(insert_stmt, data, cursor, conn)
-print("script done.")
+print("database successfully build!")
 conn.commit()
 conn.close()
