@@ -47,7 +47,7 @@ ad_rue varchar(50) NULL,
 ad_numero varchar(50) NULL,
 ad_code_postal varchar(50) NULL,
 ad_ville varchar(50) NULL,
-password varchar(50) NULL,
+password varchar(60) NULL,
 iso_code char(3) NOT NULL,
 foreign key (iso_code) references Pays(iso_code)
 );
