@@ -28,8 +28,8 @@ public class LoginController extends BaseController implements LoginViewControll
         viewController.showError(title, message);
     }
 
-    public void displayInformation(String title, String message) {
-        viewController.showInformation(title, message);
+    public void displayInformation(String message) {
+        viewController.showInformation(message);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class LoginController extends BaseController implements LoginViewControll
         if(o!=null){
 
         }else{
-            displayInformation("Erreur lors du login", "le password ou le mdp est incorrect");
+            displayInformation("le password ou le mdp est incorrect");
         }
     }
 

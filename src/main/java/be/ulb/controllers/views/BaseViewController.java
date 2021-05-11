@@ -11,29 +11,8 @@ import javafx.scene.control.Alert;
 
 public class BaseViewController {
 
-abstract class BaseViewController {
-    /**
-     * Displays notification of a success demand.
-     *
-     * @param title       of the alert
-     * @param information content to display
-     */
-    public void showInformation(String title, String information) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setTitle(title);
-        alert.setContentText(information);
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.getButtonTypes().setAll(ButtonType.OK);
-        alert.showAndWait();
-    }
-    protected BaseViewController(){}
 
-    public void showInformation(String text){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(text);
-        alert.show();
-    }
-}
+    protected BaseViewController(){}
 
     public void showInformation(String information) {
         Alert alert = new Alert(Alert.AlertType.NONE);
