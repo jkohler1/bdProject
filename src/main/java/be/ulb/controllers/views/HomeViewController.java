@@ -1,22 +1,16 @@
 package be.ulb.controllers.views;
 
-import javafx.beans.property.SimpleStringProperty;
+
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.Set;
 
 public class HomeViewController extends BaseViewController implements Initializable {
 
@@ -31,6 +25,12 @@ public class HomeViewController extends BaseViewController implements Initializa
     @FXML
     TextArea queryArea;
 
+    @FXML
+    Button statsBtn;
+
+    @FXML
+    ChoiceBox<String> queryBox;
+
     public void setListener(ViewListener listener){
         this.listener = listener;
     }
@@ -38,11 +38,10 @@ public class HomeViewController extends BaseViewController implements Initializa
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         execBtn.setOnMouseClicked(event->listener.execQuery(queryArea.getText()));
-        execBtn.setOnKeyReleased(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
-                listener.execQuery(queryArea.getText());
-            }
-        });
+        statsBtn.setOnMouseClicked(event -> listener.showStats());
+        queryBox.setValue("Select a pre-defined query");
+        queryBox.setOnAction(event -> listener.loadQuery(queryBox.getSelectionModel().getSelectedItem()));
+
     }
 
     /**
@@ -63,11 +62,33 @@ public class HomeViewController extends BaseViewController implements Initializa
         tableView.refresh();
     }
 
+    public void setListOfQueries(Set<String> listOfQueries) {
+        for(String title : listOfQueries){
+            queryBox.getItems().add(title);
+        }
+    }
+
+    public void setQueryArea(String query) {
+        queryArea.setText(query);
+    }
+
     public interface ViewListener{
         /**
          * Execute a query
          * @param text the query
          */
         void execQuery(String text);
+
+        /**
+         * go to the stats view
+         * the view will contains stats for current query
+         */
+        void showStats();
+
+        /**
+         * Load a pre define query
+         * @param selectedQuery the selected query
+         */
+        void loadQuery(String selectedQuery);
     }
 }
