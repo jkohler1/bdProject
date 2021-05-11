@@ -22,19 +22,23 @@ public class Database {
     }
 
     private static void connectToSchema() throws SQLException {
-        PreparedStatement ps = getPrepareStatement("use db_bd;");
+        PreparedStatement ps = getPreparedStatement("use db_bd;");
         ps.executeUpdate();
     }
 
     private static boolean checkIfSchemaExist() throws SQLException {
-        PreparedStatement ps = getPrepareStatement("select count(*) as is_schema_present from information_schema.tables where table_schema = 'db_bd'");
+        PreparedStatement ps = getPreparedStatement("select count(*) as is_schema_present from information_schema.tables where table_schema = 'db_bd'");
         ResultSet rs = ps.executeQuery();
         if(!rs.next()) return false;
         return rs.getInt("is_schema_present") > 0;
     }
 
-    public static PreparedStatement getPrepareStatement(String sql) throws SQLException {
+    public static PreparedStatement getPreparedStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
+    }
+
+    public static PreparedStatement getPreparedStatement(String sql, int s) throws SQLException {
+        return connection.prepareStatement(sql,s);
     }
 
     public static void commitStatement() throws SQLException {

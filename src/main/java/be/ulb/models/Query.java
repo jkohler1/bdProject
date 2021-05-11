@@ -23,7 +23,7 @@ public class Query {
     }
 
     public void exec() throws SQLException {
-        PreparedStatement ps = Database.getPrepareStatement(query);
+        PreparedStatement ps = Database.getPreparedStatement(query);
         ResultSet rs = ps.executeQuery();
         ResultSetMetaData resultSetMetaData = rs.getMetaData();
         for(int i=1;i<=resultSetMetaData.getColumnCount();i++){
