@@ -6,9 +6,11 @@ import be.ulb.exceptions.NavigationException;
 import be.ulb.models.Epidemiologiste;
 import be.ulb.models.Pays;
 import be.ulb.models.Utilisateur;
+import be.ulb.utils.AllCountrySingleton;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
 public class RegisterController extends BaseController implements RegisterViewController.ViewListener {
@@ -26,7 +28,8 @@ public class RegisterController extends BaseController implements RegisterViewCo
         try {
             viewController = (RegisterViewController) ViewLoader.getInstance().loadView("RegisterView.fxml");
             viewController.setListener(this);
-        } catch (IOException e) {
+            viewController.setCountry(AllCountrySingleton.getAllCountry());
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -39,14 +42,15 @@ public class RegisterController extends BaseController implements RegisterViewCo
 
     @Override
     public void registerUser(String nom, String prenom, String pseudo, String rue, String num, String codePostal, String ville, String password,String tel,String centre ,String type, String isoCode) throws SQLException, NavigationException {
-        Utilisateur u = new Utilisateur(UUID.randomUUID(),prenom,nom,pseudo,password,rue,num,codePostal,ville,isoCode,type=="Utilisateur"?true:false);
-        if(u.isEpidemio()){
-            Epidemiologiste e = (Epidemiologiste) u;
+        if(type.equals("Utilisateur")){
+            Utilisateur u = new Utilisateur(UUID.randomUUID(),prenom,nom,pseudo,password,rue,num,codePostal,ville,isoCode,false);
+            u.register();
+        }else{
+            Epidemiologiste e = new Epidemiologiste(UUID.randomUUID(),prenom,nom,pseudo,password,rue,num,codePostal,ville,isoCode,tel,centre,true);
             e.setTel(tel);
             e.setCentre(centre);
             e.register();
-        }else{
-            u.register();
+
         }
         this.listener.navigateBack();
     }

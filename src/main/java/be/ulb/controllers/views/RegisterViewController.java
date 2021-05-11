@@ -12,11 +12,14 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class RegisterViewController extends BaseViewController implements Initializable {
 
     private RegisterViewController.ViewListener listener;
+
+    private List<Pays> allCountry;
 
     @FXML
     private Button goBackButton;
@@ -65,11 +68,17 @@ public class RegisterViewController extends BaseViewController implements Initia
         this.listener = listener;
     }
 
+    public void setCountry(List<Pays>listCountry){
+        this.allCountry=listCountry;
+        for(Pays pays : allCountry){
+            choiceBoxCountry.getItems().add(pays.getIsoCode());
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         choiceBox.getItems().add("Utilisateur");
         choiceBox.getItems().add("Epidémiologiste");
-        choiceBoxCountry.getItems().add("Bel");
         choiceBox.setOnAction(event->{
             String selectedItem = choiceBox.getSelectionModel().getSelectedItem();
             if(selectedItem.equals("Utilisateur")){
@@ -104,6 +113,5 @@ public class RegisterViewController extends BaseViewController implements Initia
     public interface ViewListener{
         void goBack() throws NavigationException;
         void registerUser(String nom, String prenom, String pseudo, String rue, String num, String codePostal, String ville, String password,String tel,String centre, String type, String isoCode) throws SQLException, NavigationException;
-
     }
 }

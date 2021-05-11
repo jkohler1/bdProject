@@ -4,6 +4,7 @@ import be.ulb.controllers.views.LoginViewController;
 import be.ulb.controllers.views.ViewLoader;
 import be.ulb.dao.UserDao;
 import be.ulb.exceptions.NavigationException;
+import be.ulb.models.Utilisateur;
 
 
 import java.io.IOException;
@@ -27,9 +28,18 @@ public class LoginController extends BaseController implements LoginViewControll
         viewController.showError(title, message);
     }
 
+    public void displayInformation(String title, String message) {
+        viewController.showInformation(title, message);
+    }
+
     @Override
     public void login(String pseudo, String password) throws SQLException {
-        UserDao.login(pseudo, password);
+        Object o=UserDao.login(pseudo, password);
+        if(o!=null){
+
+        }else{
+            displayInformation("Erreur lors du login", "le password ou le mdp est incorrect");
+        }
     }
 
     @Override
