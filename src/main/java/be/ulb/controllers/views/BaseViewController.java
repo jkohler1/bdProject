@@ -7,6 +7,9 @@ import javafx.scene.layout.Region;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import javafx.scene.control.Alert;
+
+public class BaseViewController {
 
 abstract class BaseViewController {
     /**
@@ -23,6 +26,14 @@ abstract class BaseViewController {
         alert.getButtonTypes().setAll(ButtonType.OK);
         alert.showAndWait();
     }
+    protected BaseViewController(){}
+
+    public void showInformation(String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(text);
+        alert.show();
+    }
+}
 
     public void showInformation(String information) {
         Alert alert = new Alert(Alert.AlertType.NONE);

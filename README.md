@@ -1,7 +1,5 @@
 # INFO-H303 Projet de base de donnée
 
-***
-
 ## Getting started
 
 1. You must have installed mysql
