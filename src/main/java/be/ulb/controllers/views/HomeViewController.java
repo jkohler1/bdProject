@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class HomeViewController extends BaseViewController implements Initializable {
 
@@ -50,6 +51,8 @@ public class HomeViewController extends BaseViewController implements Initializa
      * @param rows all results
      */
     public void setTableViewData(List<String> fields, List<List<StringProperty>> rows) {
+        tableView.getColumns().clear();
+        tableView.getItems().clear();
         for(int i=0;i<fields.size();i++){
             TableColumn<List<StringProperty>, String> column = new TableColumn<>(fields.get(i));
             int finalI = i;
