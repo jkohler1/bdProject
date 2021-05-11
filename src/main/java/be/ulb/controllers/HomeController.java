@@ -2,6 +2,7 @@ package be.ulb.controllers;
 
 import be.ulb.controllers.views.HomeViewController;
 import be.ulb.controllers.views.ViewLoader;
+import be.ulb.exceptions.NavigationException;
 import be.ulb.models.Query;
 
 
@@ -16,7 +17,14 @@ public class HomeController extends BaseController implements HomeViewController
 
     private HomeViewController viewController;
 
+    private final HomeController.Listener listener;
+
     private Map<String, String> listOfQueries = new HashMap<>();
+
+    public HomeController(HomeController.Listener listener) {
+        this.listener=listener;
+    }
+
 
     @Override
     public void show() {
@@ -84,5 +92,18 @@ public class HomeController extends BaseController implements HomeViewController
     @Override
     public void loadQuery(String selectedQuery) {
         viewController.setQueryArea(listOfQueries.get(selectedQuery));
+    }
+
+    @Override
+    public void goBack() throws NavigationException {
+        this.listener.navigateBack();
+    }
+
+    public interface Listener{
+        /**
+         * Navigate back
+         * @throws NavigationException nav exception
+         */
+        void navigateBack() throws NavigationException;
     }
 }

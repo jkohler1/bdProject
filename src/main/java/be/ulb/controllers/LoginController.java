@@ -10,7 +10,7 @@ import be.ulb.models.Utilisateur;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class LoginController extends BaseController implements LoginViewController.ViewListener, RegisterController.Listener{
+public class LoginController extends BaseController implements LoginViewController.ViewListener, RegisterController.Listener, HomeController.Listener{
 
     private LoginViewController viewController;
 
@@ -36,7 +36,8 @@ public class LoginController extends BaseController implements LoginViewControll
     public void login(String pseudo, String password) throws SQLException {
         Object o=UserDao.login(pseudo, password);
         if(o!=null){
-
+            HomeController homeController = new HomeController(this);
+            homeController.show();
         }else{
             displayInformation("le password ou le mdp est incorrect");
         }

@@ -1,6 +1,7 @@
 package be.ulb.controllers.views;
 
 
+import be.ulb.exceptions.NavigationException;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,6 +32,9 @@ public class HomeViewController extends BaseViewController implements Initializa
     @FXML
     ChoiceBox<String> queryBox;
 
+    @FXML
+    private Button goBackButton;
+
     public void setListener(ViewListener listener){
         this.listener = listener;
     }
@@ -39,6 +43,13 @@ public class HomeViewController extends BaseViewController implements Initializa
     public void initialize(URL url, ResourceBundle resourceBundle) {
         execBtn.setOnMouseClicked(event->listener.execQuery(queryArea.getText()));
         statsBtn.setOnMouseClicked(event -> listener.showStats());
+        goBackButton.setOnMouseClicked(event-> {
+            try {
+                listener.goBack();
+            } catch (NavigationException e) {
+                showError("Problème de navigation",e.getMessage(),false);
+            }
+        });
         queryBox.setValue("Select a pre-defined query");
         queryBox.setOnAction(event -> listener.loadQuery(queryBox.getSelectionModel().getSelectedItem()));
 
@@ -90,5 +101,12 @@ public class HomeViewController extends BaseViewController implements Initializa
          * @param selectedQuery the selected query
          */
         void loadQuery(String selectedQuery);
+
+        /**
+         * go back
+         * @throws NavigationException
+         */
+        void goBack() throws NavigationException;
+
     }
 }
