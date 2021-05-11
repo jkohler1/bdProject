@@ -3,44 +3,45 @@ package be.ulb.models;
 import be.ulb.dao.UserDao;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class Utilisateur {
-    String uuid;
+    UUID uuid;
     String prenom;
     String nom;
+    String pseudo;
+    String password;
     String rue;
     String numero;
-    String pseudo;
     String codePostal;
     String ville;
     String isoCode;
-    String password;
     boolean isEpidemio;
 
-    public Utilisateur(String uuid, String prenom, String nom, String rue,String pseudo, String numero, String codePostal, String ville, String isoCode) {
+    public Utilisateur(UUID uuid, String prenom, String nom, String pseudo, String password, String rue, String numero, String codePostal, String ville, String isoCode, boolean isEpidemio) {
         this.uuid = uuid;
         this.prenom = prenom;
         this.nom = nom;
+        this.pseudo = pseudo;
+        this.password = password;
         this.rue = rue;
         this.numero = numero;
         this.codePostal = codePostal;
         this.ville = ville;
         this.isoCode = isoCode;
-        this.pseudo=pseudo;
+        this.isEpidemio = isEpidemio;
     }
 
-    public Utilisateur(String uuid, String prenom, String nom, String rue, String numero, String pseudo, String codePostal, String ville, String isoCode, String password, boolean isEpidemio) {
+    public Utilisateur(UUID uuid, String prenom, String nom, String pseudo, String rue, String numero, String codePostal, String ville, String isoCode) {
         this.uuid = uuid;
         this.prenom = prenom;
         this.nom = nom;
+        this.pseudo = pseudo;
         this.rue = rue;
         this.numero = numero;
-        this.pseudo = pseudo;
         this.codePostal = codePostal;
         this.ville = ville;
         this.isoCode = isoCode;
-        this.password = password;
-        this.isEpidemio = isEpidemio;
     }
 
     public String getPseudo() {
@@ -51,11 +52,11 @@ public class Utilisateur {
         this.pseudo = pseudo;
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

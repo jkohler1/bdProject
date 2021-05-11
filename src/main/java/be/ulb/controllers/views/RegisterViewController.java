@@ -55,7 +55,7 @@ public class RegisterViewController extends BaseViewController implements Initia
     private ChoiceBox<String> choiceBox;
 
     @FXML
-    private ChoiceBox<Pays> choiceBoxCountry;
+    private ChoiceBox<String> choiceBoxCountry;
 
     @FXML
     private Button registerButton;
@@ -69,6 +69,7 @@ public class RegisterViewController extends BaseViewController implements Initia
     public void initialize(URL url, ResourceBundle resourceBundle) {
         choiceBox.getItems().add("Utilisateur");
         choiceBox.getItems().add("Epidémiologiste");
+        choiceBoxCountry.getItems().add("Bel");
         choiceBox.setOnAction(event->{
             String selectedItem = choiceBox.getSelectionModel().getSelectedItem();
             if(selectedItem.equals("Utilisateur")){
@@ -102,7 +103,7 @@ public class RegisterViewController extends BaseViewController implements Initia
 
     public interface ViewListener{
         void goBack() throws NavigationException;
-        void registerUser(String nom, String prenom, String pseudo, String rue, String num, String codePostal, String ville, String password,String tel,String centre, String type, Pays pays) throws SQLException, NavigationException;
+        void registerUser(String nom, String prenom, String pseudo, String rue, String num, String codePostal, String ville, String password,String tel,String centre, String type, String isoCode) throws SQLException, NavigationException;
 
     }
 }

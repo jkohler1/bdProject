@@ -7,6 +7,9 @@ import be.ulb.models.Utilisateur;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
+
+import be.ulb.utils.BcryptPasswordEncoderSingleton;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
@@ -19,11 +22,11 @@ public class UserDao {
         ResultSet queryResult = ps.executeQuery();
         if (queryResult.next()) {
             String hashPassword = queryResult.getString("mdp");
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            BCryptPasswordEncoder encoder = BcryptPasswordEncoderSingleton.getEncoder();
             if (!encoder.matches(password, hashPassword)) {
                 return null;
             }
-            Utilisateur u = new Utilisateur(queryResult.getString("uuid"), queryResult.getString("nom"),
+            Utilisateur u = new Utilisateur(UUID.fromString(queryResult.getString("uuid")), queryResult.getString("nom"),
                     queryResult.getString("prenom"), queryResult.getString("nom_utilisateur"),
                     queryResult.getString("ad_rue"), queryResult.getString("ad_numero"),
                     queryResult.getString("ad_code_postal"), queryResult.getString("ad_ville"), queryResult.getString("iso_code"));
@@ -45,28 +48,30 @@ public class UserDao {
     }
 
     public static Utilisateur register(Utilisateur u) throws SQLException {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String query = "INSERT INTO Utilisateurs VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        BCryptPasswordEncoder encoder = BcryptPasswordEncoderSingleton.getEncoder();
+        String password=encoder.encode(u.getPassword());
+        System.out.println(password.length());
+        String query = "INSERT INTO Utilisateurs(uuid,nom,prenom,nom_utilisateur,ad_rue,ad_numero,ad_code_postal,ad_ville,password,iso_code) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement ps = Database.getPreparedStatement(query, RETURN_GENERATED_KEYS);
-        ps.setString(2,u.getNom());
-        ps.setString(3,u.getPrenom());
+        ps.setString(1,u.getUuid().toString());
+        ps.setString(2,u.getNom());        ps.setString(3,u.getPrenom());
         ps.setString(4,u.getPseudo());
         ps.setString(5,u.getRue());
         ps.setString(6,u.getNumero());
         ps.setString(7,u.getCodePostal());
         ps.setString(8,u.getVille());
-        ps.setString(9,encoder.encode(u.getPassword()));
+        ps.setString(9,password);
         ps.setString(10,u.getIsoCode());
-        ResultSet queryResult = ps.executeQuery();
-        if(queryResult.next()){
-            u.setUuid(queryResult.getString(1));
-        }else{
+        ps.executeUpdate();
+        ResultSet queryResult = ps.getGeneratedKeys();
+        if(!queryResult.next()){
             return null;
         }
         if(u.isEpidemio()){
             Epidemiologiste e = (Epidemiologiste) u;
             query = "INSERT INTO Epidemiologistes VALUES(?, ?, ?);";
             ps = Database.getPreparedStatement(query, RETURN_GENERATED_KEYS);
+            ps.setString(1,e.getUuid().toString());
             ps.setString(2,e.getCentre());
             ps.setString(3,e.getTel());
             queryResult = ps.executeQuery();

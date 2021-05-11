@@ -5,6 +5,8 @@ module bd.projet {
     requires mysql.connector.java;
     requires java.sql;
     requires spring.security.crypto;
+    requires bcrypt;
+    requires commons.logging;
 
     opens be.ulb;
     opens be.ulb.controllers;

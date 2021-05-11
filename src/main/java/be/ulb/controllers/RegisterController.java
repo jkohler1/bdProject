@@ -9,6 +9,7 @@ import be.ulb.models.Utilisateur;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class RegisterController extends BaseController implements RegisterViewController.ViewListener {
 
@@ -24,11 +25,10 @@ public class RegisterController extends BaseController implements RegisterViewCo
     public void show() {
         try {
             viewController = (RegisterViewController) ViewLoader.getInstance().loadView("RegisterView.fxml");
-
+            viewController.setListener(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
-            viewController.setListener(this);
     }
 
 
@@ -38,8 +38,8 @@ public class RegisterController extends BaseController implements RegisterViewCo
     }
 
     @Override
-    public void registerUser(String nom, String prenom, String pseudo, String rue, String num, String codePostal, String ville, String password,String tel,String centre ,String type, Pays pays) throws SQLException, NavigationException {
-        Utilisateur u = new Utilisateur("0",prenom,nom,rue,pseudo,num,codePostal,ville,pays.getIsoCode());
+    public void registerUser(String nom, String prenom, String pseudo, String rue, String num, String codePostal, String ville, String password,String tel,String centre ,String type, String isoCode) throws SQLException, NavigationException {
+        Utilisateur u = new Utilisateur(UUID.randomUUID(),prenom,nom,pseudo,password,rue,num,codePostal,ville,isoCode,type=="Utilisateur"?true:false);
         if(u.isEpidemio()){
             Epidemiologiste e = (Epidemiologiste) u;
             e.setTel(tel);
