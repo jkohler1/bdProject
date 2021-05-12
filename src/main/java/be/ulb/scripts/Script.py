@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import errorcode
 import os
 import csv
+import sys
 from datetime import datetime
 
 
@@ -44,9 +45,9 @@ def executeQuery(insert_stmt, data, cursor, conn):
         print(e)
         exit(1)
 
-
 try:
-    conn = mysql.connector.connect(user='bd_user@info-h303', password='bd_password=303', host='info-h303.mysql.database.azure.com')
+    conn = mysql.connector.connect(user='bd_user@info-h303', password='bd_password=303',
+                                   host='info-h303.mysql.database.azure.com')
 
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -60,13 +61,13 @@ else:
     print("starting building the database...\n")
     conn.cursor().execute("CREATE SCHEMA IF NOT EXISTS db_bd")
     conn.database = 'db_bd'
-    executeScriptFromFile('CreateTable.sql')
+    executeScriptFromFile('./CreateTable.sql')
     conn.commit()
     cursor = conn.cursor()
     dico = {}
     iso_codes = []
     vaccins = {}
-    directory = "data"
+    directory = "./data"
 
     for filename in os.listdir(directory):
         if filename == "vaccinations.csv" or filename == "hospitals.csv":
@@ -74,8 +75,10 @@ else:
         else:
             dico[filename.split(".")[0]] = importCsv(directory + "/" + filename, ';')
 
-    print("inserting climates")
+    count = 0
     for climat in dico["climate"]:
+        count += 1
+        sys.stdout.write('\r' + "inserting climates => " + str(round((count / len(dico["climate"])) * 100, 2)) + "%")
         insert_stmt = (
             """INSERT INTO Climats(id,description)
             VALUES (%s,%s)"""
@@ -85,8 +88,10 @@ else:
     regions = {}
     continents = {}
 
-    print("inserting countries")
+    count = 0
     for pays in dico["country"]:
+        count += 1
+        sys.stdout.write('\r' + "inserting countries => " + str(round((count / len(dico["country"])) * 100, 2)) + "%")
         if not pays["continent"] in continents:
             insert_stmt = (
                 """INSERT INTO Continents(nom)
@@ -118,8 +123,10 @@ else:
             pays["climate"])
         executeQuery(insert_stmt, data, cursor, conn)
 
-    print("inserting vaccinations")
+    count = 0
     for test in dico["vaccinations"]:
+        count += 1
+        sys.stdout.write('\r' + "inserting vaccinations => " + str(round((count / len(dico["vaccinations"])) * 100, 2)) + "%")
         insert_stmt = (
             """INSERT INTO Tests(iso_code,date,tests,vaccinations)
             VALUES (%s,%s,%s,%s)"""
@@ -134,8 +141,10 @@ else:
                     test["vaccinations"])
             executeQuery(insert_stmt, data, cursor, conn)
 
-    print("inserting producers")
+    coount = 0
     for vaccin in dico["producers"]:
+        count += 1
+        sys.stdout.write('\r' + "inserting producers => " + str(round((count / len(dico["producers"])) * 100, 2)) + "%")
         for source_vaccin in (vaccin["vaccines"].split(",")):
             source_vaccin = source_vaccin.lstrip()
             if source_vaccin in vaccins:
@@ -155,9 +164,11 @@ else:
                 data = (vaccin["iso_code"], id_vaccin, vaccin["date"])
                 executeQuery(insert_stmt, data, cursor, conn)
 
-    print("inserting hospitals")
+    count = 0
     users = []
     for hospital in dico["hospitals"]:
+        count += 1
+        sys.stdout.write('\r' + "inserting hospitals => " + str(round((count / len(dico["hospitals"])) * 100, 2)) + "%")
         if not hospital["source_epidemiologiste"] in users:
             insert_stmt = (
                 """INSERT INTO Utilisateurs (uuid, iso_code) 

@@ -9,7 +9,7 @@ public class Database {
 
     public static void initConnection() throws ClassNotFoundException, SQLException, IOException, InterruptedException {
         Class.forName("java.sql.DriverManager");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/","bd_user","bd_password");
+        connection = DriverManager.getConnection("jdbc:mysql://info-h303.mysql.database.azure.com:3306","bd_user@info-h303","bd_password=303");
         connection.setAutoCommit(false);
         if(!checkIfSchemaExist()){
             ProcessBuilder processBuilder = new ProcessBuilder("python" ,"src/main/java/be/ulb/scripts/Script.py");
