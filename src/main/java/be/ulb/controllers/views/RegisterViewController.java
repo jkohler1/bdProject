@@ -73,6 +73,7 @@ public class RegisterViewController extends BaseViewController implements Initia
         for(Pays pays : allCountry){
             choiceBoxCountry.getItems().add(pays.getIsoCode());
         }
+        choiceBoxCountry.setValue("BEL");
     }
 
     @Override
