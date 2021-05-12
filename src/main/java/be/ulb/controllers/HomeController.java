@@ -25,7 +25,6 @@ public class HomeController extends BaseController implements HomeViewController
         this.listener=listener;
     }
 
-
     @Override
     public void show() {
         try {
@@ -78,10 +77,10 @@ public class HomeController extends BaseController implements HomeViewController
         Query query = new Query(text);
         try {
             query.exec();
-            viewController.setTableViewData(query.getFields(), query.getRows());
         } catch (SQLException e) {
             viewController.showInformation(e.getMessage());
         }
+        viewController.setTableViewData(query.getFields(), query.getRows());
     }
 
     @Override

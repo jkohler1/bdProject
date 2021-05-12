@@ -29,10 +29,10 @@ where H.date="2021-01-01"
 
 Calculez l’évolution, pour chaque jour et chaque pays, du nombre de patients hospitalisés
 
-SELECT P1.nom, (H2.hosp_patients-H1.hosp_patients) as 'nombre hospit', H1.date
-from Pays P1, Hospitalisations H1, Hospitalisations H2
-WHERE H1.iso_code=H2.iso_code AND DATE_ADD(H1.date, INTERVAL 1 DAY) = H2.date
-order by P1.nom, H1.date
+SELECT P1.nom,P1.iso_code, (H2.hosp_patients-H1.hosp_patients) as 'nombre hospit', H2.date
+FROM Pays P1, Hospitalisations H1, Hospitalisations H2
+WHERE H1.iso_code=H2.iso_code AND DATE_ADD(H1.date, INTERVAL 1 DAY) = H2.date AND H2.iso_code=P1.iso_code
+ORDER BY P1.nom, H2.date
 
 Sélectionnez le nom des vaccins disponibles à la fois en Belgique et en France
 

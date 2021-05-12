@@ -6,7 +6,6 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 
 import java.net.URL;
 import java.util.List;
@@ -35,13 +34,22 @@ public class HomeViewController extends BaseViewController implements Initializa
     @FXML
     private Button goBackButton;
 
+    @FXML
+    private ProgressBar progress;
+    private Thread thread;
+
     public void setListener(ViewListener listener){
         this.listener = listener;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        execBtn.setOnMouseClicked(event->listener.execQuery(queryArea.getText()));
+        progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+        progress.setVisible(false);
+        execBtn.setOnMouseClicked(event->{
+            progress.setVisible(true);
+            listener.execQuery(queryArea.getText());
+        });
         statsBtn.setOnMouseClicked(event -> listener.showStats());
         goBackButton.setOnMouseClicked(event-> {
             try {
@@ -71,6 +79,7 @@ public class HomeViewController extends BaseViewController implements Initializa
         }
         tableView.getItems().addAll(rows);
         tableView.refresh();
+        progress.setVisible(false);
     }
 
     public void setListOfQueries(Set<String> listOfQueries) {
