@@ -171,10 +171,10 @@ else:
         sys.stdout.write('\r' + "inserting hospitals => " + str(round((count / len(dico["hospitals"])) * 100, 2)) + "%")
         if not hospital["source_epidemiologiste"] in users:
             insert_stmt = (
-                """INSERT INTO Utilisateurs (uuid, iso_code) 
-                VALUES (%s,%s)"""
+                """INSERT INTO Utilisateurs (uuid, nom_utilisateur, password,iso_code) 
+                VALUES (%s,%s,%s,%s)"""
             )
-            data = (hospital["source_epidemiologiste"], hospital["iso_code"])
+            data = (hospital["source_epidemiologiste"], hospital["iso_code"].lower(),hospital["iso_code"].lower(),hospital["iso_code"])
             executeQuery(insert_stmt, data, cursor, conn)
             users.append(hospital["source_epidemiologiste"])
 

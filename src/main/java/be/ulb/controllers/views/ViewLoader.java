@@ -31,7 +31,7 @@ public class ViewLoader {
 
     public void initializeWindow() {
         stage.setTitle("INFO-H303 | Projet de base de donnée");
-        //stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/coronavirus.png"))));
+        stage.getIcons().add(new Image("file:src/main/resources/images/coronavirus.png"));
         stage.centerOnScreen();
     }
 

@@ -36,7 +36,6 @@ public class HomeViewController extends BaseViewController implements Initializa
 
     @FXML
     private ProgressBar progress;
-    private Thread thread;
 
     public void setListener(ViewListener listener){
         this.listener = listener;
@@ -46,6 +45,7 @@ public class HomeViewController extends BaseViewController implements Initializa
     public void initialize(URL url, ResourceBundle resourceBundle) {
         progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
         progress.setVisible(false);
+        queryArea.setOnKeyTyped(event-> statsBtn.setDisable(true));
         execBtn.setOnMouseClicked(event->{
             progress.setVisible(true);
             listener.execQuery(queryArea.getText());
@@ -59,7 +59,10 @@ public class HomeViewController extends BaseViewController implements Initializa
             }
         });
         queryBox.setValue("Select a pre-defined query");
-        queryBox.setOnAction(event -> listener.loadQuery(queryBox.getSelectionModel().getSelectedItem()));
+        queryBox.setOnAction(event -> {
+            statsBtn.setDisable(false);
+            listener.loadQuery(queryBox.getSelectionModel().getSelectedItem());
+        });
 
     }
 

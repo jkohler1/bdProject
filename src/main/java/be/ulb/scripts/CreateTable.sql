@@ -42,12 +42,12 @@ CREATE table IF NOT EXISTS Utilisateurs
 uuid char(36) primary key,
 nom varchar(50) NULL,
 prenom varchar(50) NULL,
-nom_utilisateur varchar(50) NULL,
+nom_utilisateur varchar(50) NOT NULL,
 ad_rue varchar(50) NULL,
 ad_numero varchar(50) NULL,
 ad_code_postal varchar(50) NULL,
 ad_ville varchar(50) NULL,
-password varchar(60) NULL,
+password varchar(60) NOT NULL,
 iso_code char(3) NOT NULL,
 foreign key (iso_code) references Pays(iso_code)
 );

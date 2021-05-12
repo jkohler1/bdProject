@@ -15,8 +15,7 @@ public class Main extends Application {
         ViewLoader.getInstance().setStage(primaryStage);
         ViewLoader.getInstance().initializeWindow();
         Database.initConnection();
-        LoginController controller = new LoginController();
-        controller.show();
+        (new LoginController()).show();
     }
 
 
