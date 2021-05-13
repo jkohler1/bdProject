@@ -1,10 +1,10 @@
-Visualiser les pays qui pour une même date on eu plus de 5000 cas d'hospitalisations
+1. Visualiser les pays qui pour une même date on eu plus de 5000 cas d'hospitalisations
 
 SELECT DISTINCT p.nom
 FROM Pays p, Hospitalisations h1, Hospitalisations h2
 WHERE p.iso_code=h1.iso_code AND h1.date=h2.date AND h1.iso_code <> h2.iso_code AND h1.hosp_patients>5000 AND h2.hosp_patients>5000
 
-Sélectionnez le pays qui a administré le plus grand nombre total de vaccins
+2. Sélectionnez le pays qui a administré le plus grand nombre total de vaccins
 
 SELECT t.iso_code , sum(t.vaccinations) as numberVaccination, P.nom
 FROM Tests t
@@ -13,7 +13,7 @@ GROUP BY t.iso_code
 ORDER BY numberVaccination desc
 LIMIT 1
 
-Pour chaque vaccin, sélectionnez le nom des pays qui l’utilisent
+3. Pour chaque vaccin, sélectionnez le nom des pays qui l’utilisent
 
 SELECT v.vaccins, GROUP_CONCAT(P.nom) as "Liste vaccins"
 FROM Vaccins v
@@ -21,21 +21,21 @@ LEFT JOIN Vaccins_Pays vp on v.id_vaccin = vp.id_vaccin
 LEFT JOIN Pays P on P.iso_code = vp.iso_code
 GROUP BY v.id_vaccin
 
-La proportion de la population hospitalisée pour chaque pays, le 1er janvier 2021
+4. La proportion de la population hospitalisée pour chaque pays, le 1er janvier 2021
 
 SELECT h.hosp_patients, p.nom, p.population, (h.hosp_patients/p.population)*100 as ProportionHospit
 FROM Hospitalisations h
 LEFT JOIN Pays p on p.iso_code = h.iso_code
 WHERE h.date="2021-01-01"
 
-Calculez l’évolution, pour chaque jour et chaque pays, du nombre de patients hospitalisés
+5. Calculez l’évolution, pour chaque jour et chaque pays, du nombre de patients hospitalisés
 
 SELECT p1.nom, p1.iso_code, (h2.hosp_patients-h1.hosp_patients) as 'nombre hospit', h2.date
 FROM Pays p1, Hospitalisations h1, Hospitalisations h2
 WHERE h1.iso_code=h2.iso_code AND DATE_ADD(h1.date, INTERVAL 1 DAY) = h2.date AND h2.iso_code=p1.iso_code
 ORDER BY p1.nom, h2.date
 
-Sélectionnez le nom des vaccins disponibles à la fois en Belgique et en France
+6. Sélectionnez le nom des vaccins disponibles à la fois en Belgique et en France
 
 SELECT v.vaccins
 FROM Vaccins v,Vaccins_Pays vp1,Vaccins_Pays vp2

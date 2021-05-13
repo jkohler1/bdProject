@@ -35,20 +35,17 @@ public class HomeViewController extends BaseViewController implements Initializa
     @FXML
     private Button goBackButton;
 
-    @FXML
-    private ProgressBar progress;
-
     public void setListener(ViewListener listener){
         this.listener = listener;
     }
 
+    private boolean isStatActive = true;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-        progress.setVisible(false);
         queryArea.setOnKeyTyped(event-> statsBtn.setDisable(true));
         execBtn.setOnMouseClicked(event->{
-            progress.setVisible(true);
+            statsBtn.setDisable(isStatActive);
             listener.execQuery(queryArea.getText());
         });
         statsBtn.setOnMouseClicked(event -> {
@@ -67,8 +64,10 @@ public class HomeViewController extends BaseViewController implements Initializa
         });
         queryBox.setValue("Select a pre-defined query");
         queryBox.setOnAction(event -> {
-            statsBtn.setDisable(false);
-            listener.loadQuery(queryBox.getSelectionModel().getSelectedItem());
+            String selectedItem = queryBox.getSelectionModel().getSelectedItem();
+            int queryNumber = Integer.parseInt(selectedItem.split("\\.")[0]);
+            isStatActive = (queryNumber == 6 || queryNumber == 4 || queryNumber == 1);
+            listener.loadQuery(selectedItem);
         });
 
     }
@@ -89,7 +88,6 @@ public class HomeViewController extends BaseViewController implements Initializa
         }
         tableView.getItems().addAll(rows);
         tableView.refresh();
-        progress.setVisible(false);
     }
 
     public void setListOfQueries(Set<String> listOfQueries) {

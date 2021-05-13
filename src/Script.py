@@ -45,7 +45,7 @@ def executeQuery(insert_stmt, data, cursor, conn):
 
 
 try:
-    conn = mysql.connector.connect(user='bd_user', password='bd_password', host='localhost')
+    conn = mysql.connector.connect(user='bd_user@info-h303', password='bd_password=303', host='info-h303.mysql.database.azure.com')
 
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
