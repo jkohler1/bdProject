@@ -4,6 +4,7 @@ import be.ulb.controllers.views.HomeViewController;
 import be.ulb.controllers.views.ViewLoader;
 import be.ulb.exceptions.NavigationException;
 import be.ulb.models.Query;
+import be.ulb.utils.Helper;
 
 
 import java.io.File;
@@ -13,9 +14,11 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class HomeController extends BaseController implements HomeViewController.ViewListener{
+public class HomeController extends BaseController implements HomeViewController.ViewListener, StatController.Listener{
 
     private HomeViewController viewController;
+
+    private Query query;
 
     private final HomeController.Listener listener;
 
@@ -74,18 +77,23 @@ public class HomeController extends BaseController implements HomeViewController
 
     @Override
     public void execQuery(String text) {
-        Query query = new Query(text);
-        try {
-            query.exec();
-        } catch (SQLException e) {
-            viewController.showInformation(e.getMessage());
+        if((text.toLowerCase().contains("delete") || text.toLowerCase().contains("update")) && !Helper.getUtilisateur().isEpidemio()){
+            viewController.showInformation("Vous n'êtes pas autorisé à réaliser ce type de query");
+        }else{
+            query = new Query(text);
+            try {
+                query.exec();
+            } catch (SQLException e) {
+                viewController.showInformation(e.getMessage());
+            }
+            viewController.setTableViewData(query.getFields(), query.getRows());
         }
-        viewController.setTableViewData(query.getFields(), query.getRows());
     }
 
     @Override
-    public void showStats() {
-
+    public void showStats() throws IOException, NavigationException {
+        StatController statController=new StatController(query,this);
+        statController.show();
     }
 
     @Override
@@ -96,6 +104,11 @@ public class HomeController extends BaseController implements HomeViewController
     @Override
     public void goBack() throws NavigationException {
         this.listener.navigateBack();
+    }
+
+    @Override
+    public void navigateBack() throws NavigationException {
+        this.show();
     }
 
     public interface Listener{

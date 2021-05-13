@@ -5,6 +5,8 @@ import be.ulb.controllers.views.ViewLoader;
 import be.ulb.dao.UserDao;
 import be.ulb.exceptions.NavigationException;
 import be.ulb.models.Utilisateur;
+import be.ulb.utils.Helper;
+import com.mysql.cj.util.Util;
 
 
 import java.io.IOException;
@@ -36,6 +38,7 @@ public class LoginController extends BaseController implements LoginViewControll
     public void login(String pseudo, String password) throws SQLException {
         Object o=UserDao.login(pseudo, password);
         if(o!=null){
+            Helper.setUtilisateur((Utilisateur) o);
             HomeController homeController = new HomeController(this);
             homeController.show();
         }else{

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -50,7 +51,13 @@ public class HomeViewController extends BaseViewController implements Initializa
             progress.setVisible(true);
             listener.execQuery(queryArea.getText());
         });
-        statsBtn.setOnMouseClicked(event -> listener.showStats());
+        statsBtn.setOnMouseClicked(event -> {
+            try {
+                listener.showStats();
+            } catch (NavigationException | IOException e) {
+                showError("Problème de navigation",e.getMessage(),false);
+            }
+        });
         goBackButton.setOnMouseClicked(event-> {
             try {
                 listener.goBack();
@@ -106,7 +113,7 @@ public class HomeViewController extends BaseViewController implements Initializa
          * go to the stats view
          * the view will contains stats for current query
          */
-        void showStats();
+        void showStats() throws IOException, NavigationException;
 
         /**
          * Load a pre define query
