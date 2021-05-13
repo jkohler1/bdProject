@@ -23,6 +23,7 @@ public class HomeController extends BaseController implements HomeViewController
     private final HomeController.Listener listener;
 
     private Map<String, String> listOfQueries = new HashMap<>();
+    private String currentTitle;
 
     public HomeController(HomeController.Listener listener) {
         this.listener=listener;
@@ -78,7 +79,7 @@ public class HomeController extends BaseController implements HomeViewController
     @Override
     public void execQuery(String text) {
         if((text.toLowerCase().contains("delete") || text.toLowerCase().contains("update")) && !Helper.getUtilisateur().isEpidemio()){
-            viewController.showInformation("Vous n'êtes pas autorisé à réaliser ce type de query");
+            viewController.showInformation("You're not able to perform this type of queries");
         }else{
             query = new Query(text);
             try {
@@ -92,12 +93,13 @@ public class HomeController extends BaseController implements HomeViewController
 
     @Override
     public void showStats() throws IOException, NavigationException {
-        StatController statController=new StatController(query,this);
+        StatController statController=new StatController(currentTitle, query, this);
         statController.show();
     }
 
     @Override
     public void loadQuery(String selectedQuery) {
+        currentTitle = selectedQuery;
         viewController.setQueryArea(listOfQueries.get(selectedQuery));
     }
 

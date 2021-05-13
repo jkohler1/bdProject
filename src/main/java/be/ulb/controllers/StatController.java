@@ -1,14 +1,14 @@
 package be.ulb.controllers;
 
-import be.ulb.controllers.views.StatViewController;
-import be.ulb.controllers.views.ViewLoader;
+import be.ulb.controllers.views.*;
 import be.ulb.exceptions.NavigationException;
 import be.ulb.models.Query;
-import be.ulb.models.Vaccin;
 
 import java.io.IOException;
 
 public class StatController extends BaseController implements StatViewController.ViewListener {
+
+    private String currentTitle;
 
     private Query query;
 
@@ -16,16 +16,39 @@ public class StatController extends BaseController implements StatViewController
 
     private StatViewController viewController;
 
-    public StatController(Query query, Listener listener) {
+    public StatController(String currentTitle, Query query, Listener listener) {
+        this.currentTitle = currentTitle;
         this.query = query;
         this.listener = listener;
     }
 
     @Override
-    public void show() throws NavigationException, IOException {
+    public void show() {
         try {
-            viewController = (StatViewController) ViewLoader.getInstance().loadView("StatView.fxml");
+            switch(Integer.parseInt(currentTitle.split("\\.")[0])) {
+                case 1:
+                    viewController = (Query1ViewController) ViewLoader.getInstance().loadView("Query1View.fxml");
+                    break;
+                case 2:
+                    viewController = (Query2ViewController) ViewLoader.getInstance().loadView("Query2View.fxml");
+                    break;
+                case 3:
+                    viewController = (Query3ViewController) ViewLoader.getInstance().loadView("Query3View.fxml");
+                    break;
+                case 4:
+                    viewController = (Query4ViewController) ViewLoader.getInstance().loadView("Query4View.fxml");
+                    break;
+                case 5:
+                    viewController = (Query5ViewController) ViewLoader.getInstance().loadView("Query5View.fxml");
+                    break;
+                case 6:
+                    viewController = (Query6ViewController) ViewLoader.getInstance().loadView("Query6View.fxml");
+                    break;
+                default:
+                    break;
+            }
             viewController.setListener(this);
+            viewController.initStats(query);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,14 +57,6 @@ public class StatController extends BaseController implements StatViewController
     @Override
     public void goBack() throws NavigationException {
         this.listener.navigateBack();
-    }
-
-    @Override
-    public void getInfo() {
-        query.getRows().forEach(elem->{
-            Vaccin v = new Vaccin(elem.get(0).toString(), elem.get(1).toString().split(","));
-            System.out.println(v);
-        });
     }
 
 
