@@ -1,43 +1,44 @@
 Visualiser les pays qui pour une même date on eu plus de 5000 cas d'hospitalisations
 
-select h1.date, p.nom
-from Pays p, Hospitalisations h1, Hospitalisations h2
-where p.iso_code=h1.iso_code and h1.iso_code <> h2.iso_code and h1.hosp_patients>5000 and h2.hosp_patients>5000 and h1.date=h2.date
-group by h1.date, p.nom
+SELECT DISTINCT p.nom
+FROM Pays p, Hospitalisations h1, Hospitalisations h2
+WHERE p.iso_code=h1.iso_code AND h1.date=h2.date AND h1.iso_code <> h2.iso_code AND h1.hosp_patients>5000 AND h2.hosp_patients>5000
 
 Sélectionnez le pays qui a administré le plus grand nombre total de vaccins
 
-select T.iso_code , sum(T.vaccinations) as numberVaccination, P.nom
-from Tests T
-left join Pays P on P.iso_code = T.iso_code
-group by T.iso_code
-order by numberVaccination desc
+SELECT t.iso_code , sum(t.vaccinations) as numberVaccination, P.nom
+FROM Tests t
+LEFT JOIN Pays P on P.iso_code = t.iso_code
+GROUP BY t.iso_code
+ORDER BY numberVaccination desc
+LIMIT 1
 
 Pour chaque vaccin, sélectionnez le nom des pays qui l’utilisent
 
-select V.vaccins, GROUP_CONCAT(P.nom) as "Liste vaccins"
-from Vaccins V
-join Vaccins_Pays VP on V.id_vaccin = VP.id_vaccin
-join Pays P on P.iso_code = VP.iso_code
-group by V.id_vaccin
+SELECT v.vaccins, GROUP_CONCAT(P.nom) as "Liste vaccins"
+FROM Vaccins v
+LEFT JOIN Vaccins_Pays vp on v.id_vaccin = vp.id_vaccin
+LEFT JOIN Pays P on P.iso_code = vp.iso_code
+GROUP BY v.id_vaccin
 
 La proportion de la population hospitalisée pour chaque pays, le 1er janvier 2021
 
-select H.hosp_patients, P.nom, P.population, (H.hosp_patients/P.population)*100 as ProportionHospit
-from Hospitalisations H join Pays P on P.iso_code = H.iso_code
-where H.date="2021-01-01"
+SELECT h.hosp_patients, p.nom, p.population, (h.hosp_patients/p.population)*100 as ProportionHospit
+FROM Hospitalisations h
+LEFT JOIN Pays p on p.iso_code = h.iso_code
+WHERE h.date="2021-01-01"
 
 Calculez l’évolution, pour chaque jour et chaque pays, du nombre de patients hospitalisés
 
-SELECT P1.nom,P1.iso_code, (H2.hosp_patients-H1.hosp_patients) as 'nombre hospit', H2.date
-FROM Pays P1, Hospitalisations H1, Hospitalisations H2
-WHERE H1.iso_code=H2.iso_code AND DATE_ADD(H1.date, INTERVAL 1 DAY) = H2.date AND H2.iso_code=P1.iso_code
-ORDER BY P1.nom, H2.date
+SELECT p1.nom, p1.iso_code, (h2.hosp_patients-h1.hosp_patients) as 'nombre hospit', h2.date
+FROM Pays p1, Hospitalisations h1, Hospitalisations h2
+WHERE h1.iso_code=h2.iso_code AND DATE_ADD(h1.date, INTERVAL 1 DAY) = h2.date AND h2.iso_code=p1.iso_code
+ORDER BY p1.nom, h2.date
 
 Sélectionnez le nom des vaccins disponibles à la fois en Belgique et en France
 
-select V.vaccins
-from Vaccins V, Vaccins_Pays VP1, Vaccins_Pays VP2
-where VP1.iso_code='BEL' AND VP2.iso_code='FRA' AND VP2.id_vaccin=VP1.id_vaccin AND V.id_vaccin=VP1.id_vaccin
+SELECT v.vaccins
+FROM Vaccins v,Vaccins_Pays vp1,Vaccins_Pays vp2
+WHERE vp1.iso_code='BEL' AND vp2.iso_code='FRA' AND vp2.id_vaccin=vp1.id_vaccin AND v.id_vaccin=vp1.id_vaccin
 
 EOF
