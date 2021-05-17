@@ -78,12 +78,13 @@ public class HomeController extends BaseController implements HomeViewController
 
     @Override
     public void execQuery(String text) {
-        if((text.toLowerCase().contains("delete") || text.toLowerCase().contains("update")) && !Helper.getUtilisateur().isEpidemio()){
+        boolean stateUpdate = text.toLowerCase().contains("delete") || text.toLowerCase().contains("update") || text.toLowerCase().contains("insert");
+        if( stateUpdate && !Helper.getUtilisateur().isEpidemio()){
             viewController.showInformation("You're not able to perform this type of queries");
         }else{
             query = new Query(text);
             try {
-                query.exec();
+                query.exec(stateUpdate);
             } catch (SQLException e) {
                 viewController.showInformation(e.getMessage());
             }

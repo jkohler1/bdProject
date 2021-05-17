@@ -54,7 +54,6 @@ public class UserDao {
     public static Utilisateur register(Utilisateur u) throws SQLException {
         BCryptPasswordEncoder encoder = BcryptPasswordEncoderSingleton.getEncoder();
         String password=encoder.encode(u.getPassword());
-        System.out.println(password.length());
         String query = "INSERT INTO Utilisateurs(uuid,nom,prenom,nom_utilisateur,ad_rue,ad_numero,ad_code_postal,ad_ville,password,iso_code) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement ps = Database.getPreparedStatement(query);
         ps.setString(1,u.getUuid().toString());

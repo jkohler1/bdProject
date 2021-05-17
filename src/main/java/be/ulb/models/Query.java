@@ -22,7 +22,27 @@ public class Query {
         rows = new ArrayList<>();
     }
 
-    public void exec() throws SQLException {
+    public void exec(boolean stateUpdate) throws SQLException{
+        if(!stateUpdate){
+            execQuery();
+        }else{
+            execUpdate();
+        }
+    }
+
+    private void execUpdate() throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            ps = Database.getPreparedStatement(query);
+            ps.executeUpdate();
+            Database.commitStatement();
+        } catch (SQLException e) {
+            Database.rollbackStatement();
+            throw new SQLException("Error", e);
+        }
+    }
+
+    private  void execQuery()throws SQLException{
         PreparedStatement ps = Database.getPreparedStatement(query);
         ResultSet rs = ps.executeQuery();
         ResultSetMetaData resultSetMetaData = rs.getMetaData();
